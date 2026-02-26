@@ -1,0 +1,160 @@
+{
+  "@@locale": "pl",
+  "appTitle": "Magiczne Uczenie",
+  "createAvatar": "Stwórz swoją postać",
+  "chooseCharacter": "Wybierz postać",
+  "enterName": "Wpisz imię",
+  "namePlaceholder": "Twoje imię...",
+  "start": "Start!",
+  "level": "Poziom",
+  "stars": "Gwiazdki",
+  "miniGameHub": "Wybierz grę",
+  "addition": "Dodawanie",
+  "subtraction": "Odejmowanie",
+  "multiplication": "Mnożenie",
+  "clockReading": "Zegar",
+  "selectMode": "Wybierz tryb",
+  "selectReward": "Wybierz nagrodę",
+  "rocketBuilder": "Buduj rakietę",
+  "correct": "Dobrze!",
+  "incorrect": "Spróbuj jeszcze raz!",
+  "greatJob": "Świetna robota!",
+  "rocketLaunched": "Rakieta wystartowała!",
+  "starsEarned": "Zdobyte gwiazdki: {count}",
+  "@starsEarned": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "levelUp": "Nowy poziom!",
+  "chooseUpgrade": "Wybierz ulepszenie",
+  "settings": "Ustawienia",
+  "parentalGate": "Strefa rodzica",
+  "parentalGateQuestion": "Ile to jest {a} × {b}?",
+  "@parentalGateQuestion": {
+    "placeholders": {
+      "a": {"type": "int"},
+      "b": {"type": "int"}
+    }
+  },
+  "resetProgress": "Wyczyść postęp",
+  "resetConfirm": "Czy na pewno chcesz wyczyścić cały postęp?",
+  "yes": "Tak",
+  "no": "Nie",
+  "back": "Wróć",
+  "continueText": "Dalej",
+  "play": "Graj!",
+  "score": "Wynik",
+  "questionOf": "Pytanie {current} z {total}",
+  "@questionOf": {
+    "placeholders": {
+      "current": {"type": "int"},
+      "total": {"type": "int"}
+    }
+  },
+  "additionUpTo10": "Dodawanie do 10",
+  "additionUpTo20": "Dodawanie do 20",
+  "additionUpTo100": "Dodawanie do 100",
+  "subtractionUpTo10": "Odejmowanie do 10",
+  "subtractionUpTo20": "Odejmowanie do 20",
+  "subtractionUpTo100": "Odejmowanie do 100",
+  "multiplicationBy2": "Tabliczka ×2",
+  "multiplicationBy3": "Tabliczka ×3",
+  "multiplicationBy4": "Tabliczka ×4",
+  "multiplicationBy5": "Tabliczka ×5",
+  "clockAmPm": "Przed/po południu",
+  "clockElapsed": "Ile czasu minęło?",
+  "clockFuture": "Która będzie?",
+  "buildRocket": "Zbuduj Rakietę!",
+  "buildCar": "Zbuduj Wyścigówkę!",
+  "chooseRocket": "Wybierz swoją rakietę!",
+  "chooseCar": "Wybierz swoją wyścigówkę!",
+  "chooseUnique": "Każda jest wyjątkowa — którą chcesz zbudować?",
+  "letsGo": "BUDUJEMY!",
+  "nextPart": "Następna część: {name}",
+  "@nextPart": {
+    "placeholders": {
+      "name": {"type": "String"}
+    }
+  },
+  "partsProgress": "{current} / {total} części",
+  "@partsProgress": {
+    "placeholders": {
+      "current": {"type": "int"},
+      "total": {"type": "int"}
+    }
+  },
+  "streakBonus": "Seria ×{multiplier}!",
+  "@streakBonus": {
+    "placeholders": {
+      "multiplier": {"type": "int"}
+    }
+  },
+  "statCorrect": "Poprawne",
+  "statTime": "Czas",
+  "statBestStreak": "Najlepsza seria",
+  "statTotalQuestions": "Pytań łącznie",
+  "mistakesReview": "Powtórz to jeszcze raz:",
+  "playAgain": "ZAGRAJ JESZCZE RAZ",
+  "backToMenu": "Wróć do menu",
+  "inSpace": "{name} w kosmosie!",
+  "@inSpace": {
+    "placeholders": {
+      "name": {"type": "String"}
+    }
+  },
+  "atFinish": "{name} na mecie!",
+  "@atFinish": {
+    "placeholders": {
+      "name": {"type": "String"}
+    }
+  },
+  "rocketClassic": "Klasyczna",
+  "rocketClassicDesc": "Niezawodna rakieta kosmiczna",
+  "rocketStealth": "Nocny Jastrząb",
+  "rocketStealthDesc": "Szybka i niewidzialna",
+  "rocketSolar": "Złota Kometa",
+  "rocketSolarDesc": "Napędzana energią słoneczną",
+  "rocketIce": "Lodowy Piorun",
+  "rocketIceDesc": "Z mroźnej planety",
+  "carRed": "Czerwony Błysk",
+  "carRedDesc": "Klasyczny bolid F1",
+  "carBlue": "Niebieski Grom",
+  "carBlueDesc": "Aerodynamiczny mistrz",
+  "carGreen": "Zielona Strzała",
+  "carGreenDesc": "Ekologiczna potęga",
+  "carPurple": "Fioletowy Cień",
+  "carPurpleDesc": "Tajemniczy nocny ścigacz",
+  "rocketPartBody": "Kadłub",
+  "rocketPartNose": "Dziób",
+  "rocketPartMainWindow": "Okno główne",
+  "rocketPartSmallWindow": "Małe okno",
+  "rocketPartLeftFin": "Lewe skrzydło",
+  "rocketPartRightFin": "Prawe skrzydło",
+  "rocketPartEngine": "Silnik",
+  "rocketPartAntenna": "Antena",
+  "rocketPartMarkings": "Oznaczenia",
+  "rocketPartFlame": "Napęd",
+  "carPartBody": "Nadwozie",
+  "carPartNose": "Dziób",
+  "carPartCockpit": "Kokpit",
+  "carPartRearWing": "Tylne skrzydło",
+  "carPartLeftRearWheel": "Lewe tylne koło",
+  "carPartRightRearWheel": "Prawe tylne koło",
+  "carPartLeftFrontWheel": "Lewe przednie koło",
+  "carPartRightFrontWheel": "Prawe przednie koło",
+  "carPartStripes": "Malowanie",
+  "carPartExhaust": "Wydech",
+  "clockTimeNight": "w nocy",
+  "clockTimeMorning": "rano",
+  "clockTimeBeforeNoon": "przed południem",
+  "clockTimeNoon": "południe",
+  "clockTimeAfternoon": "po południu",
+  "clockTimeEvening": "wieczorem",
+  "clockTimeMidnight": "północ",
+  "clockAmPmDesc": "Podaj godzinę w zapisie 24h",
+  "clockElapsedDesc": "Policz ile godzin minęło",
+  "clockFutureDesc": "Oblicz przyszłą godzinę"
+}
