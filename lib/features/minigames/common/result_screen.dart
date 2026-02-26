@@ -342,7 +342,7 @@ class _ResultScreenState extends ConsumerState<ResultScreen>
                             ),
                           ),
                           child: Text(
-                            leveledUp ? l10n.chooseUpgrade : 'ZAGRAJ JESZCZE RAZ',
+                            leveledUp ? '\u{2B50} ${l10n.levelUp}!' : 'ZAGRAJ JESZCZE RAZ',
                             style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
                           ),
                         ),

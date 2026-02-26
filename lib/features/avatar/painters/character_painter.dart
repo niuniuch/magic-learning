@@ -12,6 +12,8 @@ class CharacterPainter extends CustomPainter {
     this.level = 0,
   });
 
+  int get tier => level ~/ 5; // 0-4
+
   @override
   void paint(Canvas canvas, Size size) {
     final sx = size.width / 200;
@@ -20,16 +22,22 @@ class CharacterPainter extends CustomPainter {
     switch (characterIndex % 6) {
       case 0:
         _drawMage(canvas, sx, sy);
+        _drawMageUpgrades(canvas, sx, sy);
       case 1:
         _drawFairy(canvas, sx, sy);
+        _drawFairyUpgrades(canvas, sx, sy);
       case 2:
         _drawMerperson(canvas, sx, sy);
+        _drawMerpersonUpgrades(canvas, sx, sy);
       case 3:
         _drawSuperhero(canvas, sx, sy);
+        _drawSuperheroUpgrades(canvas, sx, sy);
       case 4:
         _drawAlien(canvas, sx, sy);
+        _drawAlienUpgrades(canvas, sx, sy);
       case 5:
         _drawRobot(canvas, sx, sy);
+        _drawRobotUpgrades(canvas, sx, sy);
     }
   }
 
@@ -1082,6 +1090,544 @@ class CharacterPainter extends CustomPainter {
     canvas.drawCircle(Offset(142 * sx, 95 * sy), 3 * sx, accent);
   }
 
+  // ─── TIER UPGRADES ─────────────────────────────────────
+
+  // ── Mage upgrades ──
+  void _drawMageUpgrades(Canvas canvas, double sx, double sy) {
+    if (tier < 1) return;
+
+    // T1: Sparkles around staff orb
+    if (tier >= 1) {
+      final sparkle = Paint()..color = const Color(0xFF64FFDA).withValues(alpha: 0.6);
+      for (final offset in [
+        Offset(158 * sx, 88 * sy),
+        Offset(176 * sx, 90 * sy),
+        Offset(165 * sx, 80 * sy),
+      ]) {
+        _drawStar(canvas, offset.dx, offset.dy, 4 * sx, sparkle);
+      }
+    }
+
+    // T2: Star patterns on robe
+    if (tier >= 2) {
+      final robeStar = Paint()..color = const Color(0xFFFFD740).withValues(alpha: 0.4);
+      for (final pos in [
+        Offset(80 * sx, 230 * sy),
+        Offset(120 * sx, 250 * sy),
+        Offset(90 * sx, 275 * sy),
+        Offset(110 * sx, 290 * sy),
+      ]) {
+        _drawStar(canvas, pos.dx, pos.dy, 5 * sx, robeStar);
+      }
+      // Enhanced hat band - gold glow
+      canvas.drawRRect(
+        RRect.fromRectAndRadius(
+          Rect.fromLTWH(72 * sx, 87 * sy, 56 * sx, 10 * sy),
+          Radius.circular(4 * sx),
+        ),
+        Paint()..color = const Color(0xFFFFD740).withValues(alpha: 0.3),
+      );
+    }
+
+    // T3: Floating rune circles
+    if (tier >= 3) {
+      final runePaint = Paint()
+        ..color = const Color(0xFF64FFDA).withValues(alpha: 0.35)
+        ..style = PaintingStyle.stroke
+        ..strokeWidth = 1.5 * sx;
+      for (final pos in [
+        Offset(35 * sx, 180 * sy),
+        Offset(165 * sx, 280 * sy),
+        Offset(25 * sx, 270 * sy),
+      ]) {
+        canvas.drawCircle(pos, 8 * sx, runePaint);
+        _drawStar(canvas, pos.dx, pos.dy, 4 * sx,
+            Paint()..color = const Color(0xFF64FFDA).withValues(alpha: 0.5));
+      }
+    }
+
+    // T4: Gold-trimmed robe edges + massive orb glow
+    if (tier >= 4) {
+      // Gold trim on robe bottom
+      canvas.drawRRect(
+        RRect.fromRectAndRadius(
+          Rect.fromLTWH(43 * sx, 308 * sy, 114 * sx, 14 * sy),
+          Radius.circular(4 * sx),
+        ),
+        Paint()..color = const Color(0xFFFFD740).withValues(alpha: 0.6),
+      );
+      // Massive orb glow
+      canvas.drawCircle(
+        Offset(166.5 * sx, 98 * sy),
+        18 * sx,
+        Paint()..color = const Color(0xFF64FFDA).withValues(alpha: 0.2),
+      );
+      canvas.drawCircle(
+        Offset(166.5 * sx, 98 * sy),
+        24 * sx,
+        Paint()..color = const Color(0xFF64FFDA).withValues(alpha: 0.1),
+      );
+      // Crown on hat tip
+      _drawStar(canvas, 100 * sx, 24 * sy, 8 * sx,
+          Paint()..color = const Color(0xFFFFD740));
+    }
+  }
+
+  // ── Fairy upgrades ──
+  void _drawFairyUpgrades(Canvas canvas, double sx, double sy) {
+    if (tier < 1) return;
+
+    // T1: Shimmer dots on wings
+    if (tier >= 1) {
+      final shimmer = Paint()..color = Colors.white.withValues(alpha: 0.5);
+      for (final pos in [
+        Offset(30 * sx, 140 * sy), Offset(45 * sx, 165 * sy),
+        Offset(25 * sx, 180 * sy), Offset(170 * sx, 140 * sy),
+        Offset(155 * sx, 165 * sy), Offset(175 * sx, 180 * sy),
+      ]) {
+        canvas.drawCircle(pos, 2.5 * sx, shimmer);
+      }
+    }
+
+    // T2: Wand aura + sparkle trail
+    if (tier >= 2) {
+      // Wand glow rings
+      for (var r = 12.0; r <= 20; r += 4) {
+        canvas.drawCircle(
+          Offset(175 * sx, 155 * sy),
+          r * sx,
+          Paint()
+            ..color = const Color(0xFFFFD700).withValues(alpha: 0.15)
+            ..style = PaintingStyle.stroke
+            ..strokeWidth = 1.5 * sx,
+        );
+      }
+      // Extra sparkle stars
+      for (final pos in [
+        Offset(168 * sx, 145 * sy),
+        Offset(182 * sx, 162 * sy),
+      ]) {
+        _drawStar(canvas, pos.dx, pos.dy, 4 * sx,
+            Paint()..color = const Color(0xFFFFD700).withValues(alpha: 0.7));
+      }
+    }
+
+    // T3: Glowing wings
+    if (tier >= 3) {
+      final wingGlow = Paint()
+        ..color = const Color(0xFF80DEEA).withValues(alpha: 0.2)
+        ..style = PaintingStyle.fill;
+      // Left wing glow
+      canvas.drawOval(
+        Rect.fromCenter(center: Offset(45 * sx, 160 * sy), width: 50 * sx, height: 70 * sy),
+        wingGlow,
+      );
+      // Right wing glow
+      canvas.drawOval(
+        Rect.fromCenter(center: Offset(155 * sx, 160 * sy), width: 50 * sx, height: 70 * sy),
+        wingGlow,
+      );
+      // Floating petals
+      final petal = Paint()..color = const Color(0xFFFF69B4).withValues(alpha: 0.4);
+      for (final pos in [
+        Offset(55 * sx, 310 * sy), Offset(140 * sx, 325 * sy),
+        Offset(45 * sx, 340 * sy),
+      ]) {
+        canvas.drawOval(
+          Rect.fromCenter(center: pos, width: 8 * sx, height: 5 * sy),
+          petal,
+        );
+      }
+    }
+
+    // T4: Rainbow gradient wings + golden wand
+    if (tier >= 4) {
+      // Rainbow shimmer on wings
+      final rainbowPaint = Paint()
+        ..shader = const LinearGradient(
+          colors: [
+            Color(0x40FF69B4), Color(0x40FFEB3B),
+            Color(0x4069F0AE), Color(0x4080DEEA),
+            Color(0x40CE93D8),
+          ],
+        ).createShader(Rect.fromLTWH(10 * sx, 110 * sy, 180 * sx, 100 * sy));
+      // Left wing rainbow
+      final leftWing = Path()
+        ..moveTo(75 * sx, 150 * sy)
+        ..quadraticBezierTo(10 * sx, 110 * sy, 20 * sx, 170 * sy)
+        ..quadraticBezierTo(30 * sx, 210 * sy, 75 * sx, 195 * sy)
+        ..close();
+      canvas.drawPath(leftWing, rainbowPaint);
+      final rightWing = Path()
+        ..moveTo(125 * sx, 150 * sy)
+        ..quadraticBezierTo(190 * sx, 110 * sy, 180 * sx, 170 * sy)
+        ..quadraticBezierTo(170 * sx, 210 * sy, 125 * sx, 195 * sy)
+        ..close();
+      canvas.drawPath(rightWing, rainbowPaint);
+      // Butterfly companions
+      for (final pos in [Offset(30 * sx, 120 * sy), Offset(172 * sx, 130 * sy)]) {
+        _drawButterfly(canvas, pos.dx, pos.dy, 6 * sx);
+      }
+    }
+  }
+
+  // ── Merperson upgrades ──
+  void _drawMerpersonUpgrades(Canvas canvas, double sx, double sy) {
+    if (tier < 1) return;
+
+    // T1: Bubbles rising from tail
+    if (tier >= 1) {
+      final bubble = Paint()
+        ..color = const Color(0xFF80DEEA).withValues(alpha: 0.4)
+        ..style = PaintingStyle.stroke
+        ..strokeWidth = 1.2 * sx;
+      final bubbleFill = Paint()..color = const Color(0xFF80DEEA).withValues(alpha: 0.15);
+      for (final data in [
+        [40.0, 300.0, 5.0], [155.0, 280.0, 4.0], [35.0, 260.0, 3.0],
+        [160.0, 250.0, 3.5], [50.0, 240.0, 2.5],
+      ]) {
+        final pos = Offset(data[0] * sx, data[1] * sy);
+        canvas.drawCircle(pos, data[2] * sx, bubbleFill);
+        canvas.drawCircle(pos, data[2] * sx, bubble);
+      }
+    }
+
+    // T2: Shimmering scales + glowing trident tips
+    if (tier >= 2) {
+      final shimmer = Paint()..color = const Color(0xFF4DD0E1).withValues(alpha: 0.35);
+      for (var row = 0; row < 5; row++) {
+        for (var col = 0; col < 3; col++) {
+          final cx = (82 + col * 15.0 + (row.isOdd ? 7.0 : 0)) * sx;
+          final cy = (238 + row * 18.0) * sy;
+          canvas.drawCircle(Offset(cx, cy), 2 * sx, shimmer);
+        }
+      }
+      // Trident glow
+      for (final dx in [-8.0, 0.0, 8.0]) {
+        canvas.drawCircle(
+          Offset((170 + dx) * sx, 74 * sy),
+          4 * sx,
+          Paint()..color = const Color(0xFFFFD740).withValues(alpha: 0.4),
+        );
+      }
+    }
+
+    // T3: Pearls on crown + water current
+    if (tier >= 3) {
+      // Pearls
+      final pearl = Paint()..color = const Color(0xFFFFFFFF).withValues(alpha: 0.8);
+      for (final pos in [
+        Offset(88 * sx, 63 * sy), Offset(100 * sx, 50 * sy), Offset(112 * sx, 63 * sy),
+      ]) {
+        canvas.drawCircle(pos, 3 * sx, pearl);
+        canvas.drawCircle(pos, 1.5 * sx,
+            Paint()..color = Colors.white.withValues(alpha: 0.5));
+      }
+      // Water current lines
+      final current = Paint()
+        ..color = const Color(0xFF26C6DA).withValues(alpha: 0.25)
+        ..style = PaintingStyle.stroke
+        ..strokeWidth = 2 * sx
+        ..strokeCap = StrokeCap.round;
+      for (final y in [270.0, 290.0, 310.0]) {
+        final path = Path()
+          ..moveTo(40 * sx, y * sy)
+          ..quadraticBezierTo(60 * sx, (y - 8) * sy, 80 * sx, y * sy)
+          ..quadraticBezierTo(100 * sx, (y + 8) * sy, 120 * sx, y * sy);
+        canvas.drawPath(path, current);
+      }
+    }
+
+    // T4: Royal golden trident + elaborate tail fin
+    if (tier >= 4) {
+      // Golden glow around entire trident
+      canvas.drawLine(
+        Offset(170 * sx, 80 * sy), Offset(170 * sx, 200 * sy),
+        Paint()
+          ..color = const Color(0xFFFFD740).withValues(alpha: 0.15)
+          ..strokeWidth = 12 * sx
+          ..strokeCap = StrokeCap.round,
+      );
+      // Crown gem
+      canvas.drawCircle(Offset(100 * sx, 48 * sy), 5 * sx,
+          Paint()..color = const Color(0xFFFF5252));
+      canvas.drawCircle(Offset(100 * sx, 48 * sy), 2.5 * sx,
+          Paint()..color = Colors.white.withValues(alpha: 0.6));
+      // Tail shimmer
+      canvas.drawOval(
+        Rect.fromCenter(center: Offset(100 * sx, 300 * sy), width: 70 * sx, height: 50 * sy),
+        Paint()..color = const Color(0xFF4DD0E1).withValues(alpha: 0.15),
+      );
+    }
+  }
+
+  // ── Superhero upgrades ──
+  void _drawSuperheroUpgrades(Canvas canvas, double sx, double sy) {
+    if (tier < 1) return;
+
+    // T1: Glowing star emblem
+    if (tier >= 1) {
+      for (var r = 20.0; r <= 28; r += 4) {
+        canvas.drawCircle(
+          Offset(100 * sx, 195 * sy), r * sx,
+          Paint()
+            ..color = const Color(0xFFFDD835).withValues(alpha: 0.12)
+            ..style = PaintingStyle.fill,
+        );
+      }
+    }
+
+    // T2: Power lines from hands
+    if (tier >= 2) {
+      final bolt = Paint()
+        ..color = const Color(0xFFFDD835).withValues(alpha: 0.5)
+        ..strokeWidth = 2 * sx
+        ..strokeCap = StrokeCap.round;
+      // Left hand bolts
+      canvas.drawLine(Offset(28 * sx, 215 * sy), Offset(15 * sx, 200 * sy), bolt);
+      canvas.drawLine(Offset(30 * sx, 220 * sy), Offset(12 * sx, 218 * sy), bolt);
+      // Right hand bolts
+      canvas.drawLine(Offset(172 * sx, 205 * sy), Offset(185 * sx, 190 * sy), bolt);
+      canvas.drawLine(Offset(170 * sx, 210 * sy), Offset(188 * sx, 208 * sy), bolt);
+    }
+
+    // T3: Cape shimmer lines + power aura
+    if (tier >= 3) {
+      final shimmer = Paint()
+        ..color = const Color(0xFFFF8A80).withValues(alpha: 0.3)
+        ..style = PaintingStyle.stroke
+        ..strokeWidth = 1.5 * sx;
+      for (final y in [200.0, 240.0, 280.0]) {
+        final path = Path()
+          ..moveTo(50 * sx, y * sy)
+          ..quadraticBezierTo(100 * sx, (y - 10) * sy, 150 * sx, y * sy);
+        canvas.drawPath(path, shimmer);
+      }
+      // Body aura
+      canvas.drawOval(
+        Rect.fromCenter(center: Offset(100 * sx, 200 * sy), width: 100 * sx, height: 130 * sy),
+        Paint()
+          ..color = const Color(0xFF42A5F5).withValues(alpha: 0.1)
+          ..style = PaintingStyle.fill,
+      );
+    }
+
+    // T4: Speed lines + golden suit accents
+    if (tier >= 4) {
+      final speed = Paint()
+        ..color = const Color(0xFF42A5F5).withValues(alpha: 0.4)
+        ..strokeWidth = 2 * sx
+        ..strokeCap = StrokeCap.round;
+      for (var i = 0; i < 6; i++) {
+        final y = (140 + i * 30.0) * sy;
+        canvas.drawLine(Offset(5 * sx, y), Offset(25 * sx, y), speed);
+        canvas.drawLine(Offset(175 * sx, y), Offset(195 * sx, y), speed);
+      }
+      // Gold belt upgrade
+      canvas.drawRRect(
+        RRect.fromRectAndRadius(
+          Rect.fromLTWH(58 * sx, 234 * sy, 84 * sx, 14 * sy),
+          Radius.circular(4 * sx),
+        ),
+        Paint()..color = const Color(0xFFFFD740).withValues(alpha: 0.5),
+      );
+      // Star emblem enhanced
+      _drawStar(canvas, 100 * sx, 195 * sy, 20 * sx,
+          Paint()..color = const Color(0xFFFDD835).withValues(alpha: 0.4));
+    }
+  }
+
+  // ── Alien upgrades ──
+  void _drawAlienUpgrades(Canvas canvas, double sx, double sy) {
+    if (tier < 1) return;
+
+    // T1: Antenna glow rings
+    if (tier >= 1) {
+      for (var r = 10.0; r <= 18; r += 4) {
+        canvas.drawCircle(
+          Offset(100 * sx, 26 * sy), r * sx,
+          Paint()
+            ..color = const Color(0xFF76FF03).withValues(alpha: 0.15)
+            ..style = PaintingStyle.stroke
+            ..strokeWidth = 1.5 * sx,
+        );
+      }
+    }
+
+    // T2: Tech visor + suit stripes
+    if (tier >= 2) {
+      // Visor overlay on eyes
+      canvas.drawRRect(
+        RRect.fromRectAndRadius(
+          Rect.fromLTWH(60 * sx, 88 * sy, 80 * sx, 22 * sy),
+          Radius.circular(10 * sx),
+        ),
+        Paint()..color = const Color(0xFF76FF03).withValues(alpha: 0.12),
+      );
+      canvas.drawRRect(
+        RRect.fromRectAndRadius(
+          Rect.fromLTWH(60 * sx, 88 * sy, 80 * sx, 22 * sy),
+          Radius.circular(10 * sx),
+        ),
+        Paint()
+          ..color = const Color(0xFF76FF03).withValues(alpha: 0.3)
+          ..style = PaintingStyle.stroke
+          ..strokeWidth = 1.2 * sx,
+      );
+      // Suit accent stripes
+      canvas.drawLine(
+        Offset(80 * sx, 180 * sy), Offset(80 * sx, 225 * sy),
+        Paint()
+          ..color = const Color(0xFF76FF03).withValues(alpha: 0.25)
+          ..strokeWidth = 2 * sx,
+      );
+      canvas.drawLine(
+        Offset(120 * sx, 180 * sy), Offset(120 * sx, 225 * sy),
+        Paint()
+          ..color = const Color(0xFF76FF03).withValues(alpha: 0.25)
+          ..strokeWidth = 2 * sx,
+      );
+    }
+
+    // T3: Energy shield
+    if (tier >= 3) {
+      canvas.drawOval(
+        Rect.fromCenter(center: Offset(100 * sx, 180 * sy), width: 120 * sx, height: 200 * sy),
+        Paint()
+          ..color = const Color(0xFF76FF03).withValues(alpha: 0.08)
+          ..style = PaintingStyle.fill,
+      );
+      canvas.drawOval(
+        Rect.fromCenter(center: Offset(100 * sx, 180 * sy), width: 120 * sx, height: 200 * sy),
+        Paint()
+          ..color = const Color(0xFF76FF03).withValues(alpha: 0.2)
+          ..style = PaintingStyle.stroke
+          ..strokeWidth = 1.5 * sx,
+      );
+    }
+
+    // T4: Holographic antenna + chrome suit accents
+    if (tier >= 4) {
+      // Holographic rings from antenna
+      for (var r = 8.0; r <= 30; r += 6) {
+        canvas.drawCircle(
+          Offset(100 * sx, 26 * sy), r * sx,
+          Paint()
+            ..color = Color.lerp(const Color(0xFF76FF03), const Color(0xFF00BCD4), r / 30)!
+                .withValues(alpha: 0.15)
+            ..style = PaintingStyle.stroke
+            ..strokeWidth = 1 * sx,
+        );
+      }
+      // Chrome suit highlights
+      canvas.drawRRect(
+        RRect.fromRectAndRadius(
+          Rect.fromLTWH(70 * sx, 185 * sy, 60 * sx, 40 * sy),
+          Radius.circular(6 * sx),
+        ),
+        Paint()..color = const Color(0xFFB0BEC5).withValues(alpha: 0.2),
+      );
+      // Extra belt tech lights
+      for (var i = 0; i < 5; i++) {
+        canvas.drawCircle(
+          Offset((72 + i * 14.0) * sx, 235 * sy), 2 * sx,
+          Paint()..color = const Color(0xFF76FF03).withValues(alpha: 0.6),
+        );
+      }
+    }
+  }
+
+  // ── Robot upgrades ──
+  void _drawRobotUpgrades(Canvas canvas, double sx, double sy) {
+    if (tier < 1) return;
+
+    // T1: LED lights on neck
+    if (tier >= 1) {
+      for (var i = 0; i < 4; i++) {
+        canvas.drawCircle(
+          Offset((92 + i * 6.0) * sx, 150 * sy), 2 * sx,
+          Paint()..color = [
+            const Color(0xFFFF5252), const Color(0xFF69F0AE),
+            const Color(0xFF448AFF), const Color(0xFFFFEB3B),
+          ][i],
+        );
+      }
+    }
+
+    // T2: Enhanced face screen glow + shoulder plates
+    if (tier >= 2) {
+      // Screen glow
+      canvas.drawRRect(
+        RRect.fromRectAndRadius(
+          Rect.fromLTWH(64 * sx, 61 * sy, 72 * sx, 63 * sy),
+          Radius.circular(12 * sx),
+        ),
+        Paint()
+          ..color = const Color(0xFF00BCD4).withValues(alpha: 0.15)
+          ..style = PaintingStyle.stroke
+          ..strokeWidth = 2 * sx,
+      );
+      // Shoulder plates
+      canvas.drawRRect(
+        RRect.fromRectAndRadius(
+          Rect.fromLTWH(44 * sx, 158 * sy, 14 * sx, 18 * sy),
+          Radius.circular(3 * sx),
+        ),
+        Paint()..color = const Color(0xFF00BCD4).withValues(alpha: 0.4),
+      );
+      canvas.drawRRect(
+        RRect.fromRectAndRadius(
+          Rect.fromLTWH(142 * sx, 158 * sy, 14 * sx, 18 * sy),
+          Radius.circular(3 * sx),
+        ),
+        Paint()..color = const Color(0xFF00BCD4).withValues(alpha: 0.4),
+      );
+    }
+
+    // T3: Electric sparks between joints
+    if (tier >= 3) {
+      final spark = Paint()
+        ..color = const Color(0xFF00E5FF).withValues(alpha: 0.5)
+        ..strokeWidth = 1.5 * sx
+        ..strokeCap = StrokeCap.round;
+      // Shoulder sparks
+      _drawZigzag(canvas, 52 * sx, 175 * sy, 38 * sx, 180 * sy, 3, spark);
+      _drawZigzag(canvas, 148 * sx, 175 * sy, 160 * sx, 180 * sy, 3, spark);
+      // Knee sparks
+      _drawZigzag(canvas, 77 * sx, 278 * sy, 77 * sx, 292 * sy, 2, spark);
+      _drawZigzag(canvas, 123 * sx, 278 * sy, 123 * sx, 292 * sy, 2, spark);
+    }
+
+    // T4: Gold plating + holographic chest display
+    if (tier >= 4) {
+      // Gold accent lines on body
+      canvas.drawRRect(
+        RRect.fromRectAndRadius(
+          Rect.fromLTWH(55 * sx, 155 * sy, 90 * sx, 110 * sy),
+          Radius.circular(12 * sx),
+        ),
+        Paint()
+          ..color = const Color(0xFFFFD740).withValues(alpha: 0.15)
+          ..style = PaintingStyle.stroke
+          ..strokeWidth = 2 * sx,
+      );
+      // Gold head frame
+      canvas.drawRRect(
+        RRect.fromRectAndRadius(
+          Rect.fromLTWH(60 * sx, 55 * sy, 80 * sx, 90 * sy),
+          Radius.circular(16 * sx),
+        ),
+        Paint()
+          ..color = const Color(0xFFFFD740).withValues(alpha: 0.2)
+          ..style = PaintingStyle.stroke
+          ..strokeWidth = 2 * sx,
+      );
+      // Antenna upgraded to gold
+      canvas.drawCircle(Offset(100 * sx, 30 * sy), 7 * sx,
+          Paint()..color = const Color(0xFFFFD740));
+    }
+  }
+
   // ─── HELPERS ──────────────────────────────────────────
   void _drawStar(Canvas canvas, double cx, double cy, double r, Paint paint) {
     final path = Path();
@@ -1100,6 +1646,45 @@ class CharacterPainter extends CustomPainter {
       path.lineTo(ix, iy);
     }
     path.close();
+    canvas.drawPath(path, paint);
+  }
+
+  void _drawButterfly(Canvas canvas, double cx, double cy, double r) {
+    final wing = Paint()..color = const Color(0xFFCE93D8).withValues(alpha: 0.6);
+    // Left wing
+    canvas.drawOval(
+      Rect.fromCenter(center: Offset(cx - r * 0.6, cy), width: r * 1.2, height: r * 0.8),
+      wing,
+    );
+    // Right wing
+    canvas.drawOval(
+      Rect.fromCenter(center: Offset(cx + r * 0.6, cy), width: r * 1.2, height: r * 0.8),
+      wing,
+    );
+    // Body
+    canvas.drawLine(
+      Offset(cx, cy - r * 0.4), Offset(cx, cy + r * 0.4),
+      Paint()
+        ..color = const Color(0xFF7B1FA2)
+        ..strokeWidth = r * 0.15
+        ..strokeCap = StrokeCap.round,
+    );
+  }
+
+  void _drawZigzag(Canvas canvas, double x1, double y1, double x2, double y2, int segments, Paint paint) {
+    final dx = (x2 - x1) / segments;
+    final dy = (y2 - y1) / segments;
+    final perpX = -dy * 0.4;
+    final perpY = dx * 0.4;
+    final path = Path()..moveTo(x1, y1);
+    for (var i = 0; i < segments; i++) {
+      final sign = i.isEven ? 1.0 : -1.0;
+      path.lineTo(
+        x1 + dx * (i + 0.5) + perpX * sign,
+        y1 + dy * (i + 0.5) + perpY * sign,
+      );
+    }
+    path.lineTo(x2, y2);
     canvas.drawPath(path, paint);
   }
 

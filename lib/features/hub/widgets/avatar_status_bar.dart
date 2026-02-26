@@ -43,6 +43,7 @@ class AvatarStatusBar extends StatelessWidget {
             size: 64,
             colorIndex: avatar.colorIndex,
             hat: avatar.activeHat,
+            level: avatar.level,
           ),
           const SizedBox(width: 16),
           Expanded(
