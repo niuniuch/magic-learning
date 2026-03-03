@@ -34,7 +34,7 @@ class AvatarCharacter extends StatelessWidget {
     this.size = 80,
     this.colorIndex = 0,
     this.hat,
-    this.level = 0,
+    this.level = 1,
   });
 
   @override

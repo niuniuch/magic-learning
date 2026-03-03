@@ -147,11 +147,11 @@ void main() {
   });
 
   group('Game Constants', () {
-    test('XP for level increases', () {
-      expect(GameConstants.xpForLevel(0), 10);
+    test('XP for level is flat 15', () {
       expect(GameConstants.xpForLevel(1), 15);
-      expect(GameConstants.xpForLevel(2), 20);
-      expect(GameConstants.xpForLevel(5), 35);
+      expect(GameConstants.xpForLevel(2), 15);
+      expect(GameConstants.xpForLevel(5), 15);
+      expect(GameConstants.xpForLevel(20), 15);
     });
   });
 }

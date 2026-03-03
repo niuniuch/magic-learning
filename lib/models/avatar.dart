@@ -15,7 +15,7 @@ class Avatar extends Equatable {
     required this.id,
     required this.name,
     required this.characterIndex,
-    this.level = 0,
+    this.level = 1,
     this.xp = 0,
     this.unlockedUpgrades = const [],
     this.activeHat,
@@ -59,7 +59,7 @@ class Avatar extends Equatable {
         id: json['id'] as String,
         name: json['name'] as String,
         characterIndex: json['characterIndex'] as int,
-        level: json['level'] as int? ?? 0,
+        level: (json['level'] as int? ?? 0).clamp(1, 99),
         xp: json['xp'] as int? ?? 0,
         unlockedUpgrades:
             (json['unlockedUpgrades'] as List<dynamic>?)?.cast<String>() ??

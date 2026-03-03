@@ -6,7 +6,7 @@ class GameConstants {
   static const int questionsPerRound = 10;
   static const int rocketPieces = 10;
 
-  static int xpForLevel(int level) => 10 + (level * 5);
+  static int xpForLevel(int level) => 15;
 
   // Avatar
   static const int maxAvatarLevel = 20;

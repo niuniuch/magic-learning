@@ -9,10 +9,10 @@ class CharacterPainter extends CustomPainter {
 
   CharacterPainter({
     required this.characterIndex,
-    this.level = 0,
+    this.level = 1,
   });
 
-  int get tier => level ~/ 5; // 0-4
+  int get tier => (level - 1) ~/ 5; // 0-4
 
   @override
   void paint(Canvas canvas, Size size) {
