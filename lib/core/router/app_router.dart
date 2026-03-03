@@ -11,16 +11,26 @@ import 'package:magic_learning/features/minigames/common/buildable_picker_screen
 import 'package:magic_learning/features/minigames/common/build_game_play_screen.dart';
 import 'package:magic_learning/features/minigames/common/launch_animation_screen.dart';
 import 'package:magic_learning/features/minigames/common/result_screen.dart';
+import 'package:magic_learning/features/minigames/test/test_game_screen.dart';
 import 'package:magic_learning/features/settings/screens/settings_screen.dart';
 import 'package:magic_learning/models/buildable_model.dart';
 import 'package:magic_learning/models/minigame_config.dart';
 import 'package:magic_learning/models/minigame_result.dart';
 
 final routerProvider = Provider<GoRouter>((ref) {
-  final avatar = ref.watch(avatarProvider);
+  // Use redirect instead of ref.watch to avoid recreating the router
+  // (and resetting navigation) on every avatar XP/level update.
+  final initialAvatar = ref.read(avatarProvider);
 
   return GoRouter(
-    initialLocation: avatar == null ? '/avatar/create' : '/hub',
+    initialLocation: initialAvatar == null ? '/avatar/create' : '/hub',
+    redirect: (context, state) {
+      final avatar = ref.read(avatarProvider);
+      final onCreateScreen = state.matchedLocation == '/avatar/create';
+      if (avatar == null && !onCreateScreen) return '/avatar/create';
+      if (avatar != null && onCreateScreen) return '/hub';
+      return null;
+    },
     routes: [
       GoRoute(
         path: '/avatar/create',
@@ -97,6 +107,10 @@ final routerProvider = Provider<GoRouter>((ref) {
           final result = state.extra as MiniGameResult;
           return ResultScreen(result: result);
         },
+      ),
+      GoRoute(
+        path: '/game/test',
+        builder: (context, state) => const TestGameScreen(),
       ),
       GoRoute(
         path: '/settings',

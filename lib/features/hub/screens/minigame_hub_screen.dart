@@ -38,9 +38,19 @@ class MiniGameHubScreen extends ConsumerWidget {
                     l10n.miniGameHub,
                     style: Theme.of(context).textTheme.headlineMedium,
                   ),
-                  IconButton(
-                    onPressed: () => context.push('/settings'),
-                    icon: const Icon(Icons.settings, size: 28),
+                  Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      IconButton(
+                        onPressed: () => context.push('/game/test'),
+                        icon: const Icon(Icons.bug_report, size: 28),
+                        tooltip: 'Test game',
+                      ),
+                      IconButton(
+                        onPressed: () => context.push('/settings'),
+                        icon: const Icon(Icons.settings, size: 28),
+                      ),
+                    ],
                   ),
                 ],
               ),
