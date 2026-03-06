@@ -79,6 +79,7 @@ class _AvatarFullBodyState extends State<AvatarFullBody> {
               filterQuality: FilterQuality.medium,
             )
           : CustomPaint(
+              size: Size(widget.width, widget.height),
               painter: CharacterPainter(
                 characterIndex: widget.characterIndex,
                 level: widget.level,

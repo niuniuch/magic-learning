@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:uuid/uuid.dart';
-import 'package:magic_learning/features/avatar/painters/character_painter.dart';
 import 'package:magic_learning/features/avatar/providers/avatar_provider.dart';
 import 'package:magic_learning/features/avatar/widgets/avatar_character.dart';
+import 'package:magic_learning/features/avatar/widgets/avatar_full_body.dart';
 import 'package:magic_learning/models/avatar.dart';
 import 'package:magic_learning/l10n/app_localizations.dart';
 
@@ -301,12 +301,10 @@ class _CharacterPage extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         // Full-body character
-        SizedBox(
+        AvatarFullBody(
+          characterIndex: characterIndex,
           width: 180,
           height: 320,
-          child: CustomPaint(
-            painter: CharacterPainter(characterIndex: characterIndex),
-          ),
         ),
         const SizedBox(height: 16),
         // Character type name
