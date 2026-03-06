@@ -36,5 +36,10 @@ flutter:
   assets:
     - assets/images/
     - assets/images/characters/mage/
+    - assets/images/characters/fairy/
+    - assets/images/characters/merperson/
+    - assets/images/characters/superhero/
+    - assets/images/characters/alien/
+    - assets/images/characters/robot/
     - assets/animations/
     - assets/audio/
