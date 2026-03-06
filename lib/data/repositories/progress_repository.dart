@@ -46,9 +46,23 @@ class ProgressRepository {
       modes: {...currentMiniGame.modes, result.modeId: updatedMode},
     );
 
+    // Push recent result and cap at 5
+    final recentResult = RecentResult(
+      starsEarned: result.starsEarned,
+      timestamp: DateTime.now().millisecondsSinceEpoch,
+    );
+    final updatedRecent = [
+      ...progress.recentResults,
+      recentResult,
+    ];
+    if (updatedRecent.length > 5) {
+      updatedRecent.removeRange(0, updatedRecent.length - 5);
+    }
+
     return progress.copyWith(
       miniGames: {...progress.miniGames, result.gameId: updatedMiniGame},
       totalStars: progress.totalStars + result.starsEarned,
+      recentResults: updatedRecent,
     );
   }
 }

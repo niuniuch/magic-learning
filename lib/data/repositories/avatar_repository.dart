@@ -31,11 +31,29 @@ class AvatarRepository {
     final xpNeeded = GameConstants.xpForLevel(avatar.level);
 
     if (newXp >= xpNeeded && avatar.level < GameConstants.maxAvatarLevel) {
+      final newLevel = avatar.level + 1;
+      final earnedUpgrade = GameConstants.isUpgradeLevel(newLevel) ? 1 : 0;
       return avatar.copyWith(
-        level: avatar.level + 1,
+        level: newLevel,
         xp: newXp - xpNeeded,
+        pendingUpgrades: avatar.pendingUpgrades + earnedUpgrade,
       );
     }
     return avatar.copyWith(xp: newXp);
+  }
+
+  /// Grant retroactive pending upgrades for existing high-level avatars
+  /// that have empty trackProgress (pre-upgrade-track saves).
+  Avatar migrateIfNeeded(Avatar avatar) {
+    if (avatar.trackProgress.isNotEmpty) return avatar;
+
+    final expectedPoints =
+        GameConstants.upgradePointsEarnedAtLevel(avatar.level);
+    if (expectedPoints <= 0) return avatar;
+
+    // All expected points become pending since no tracks have been upgraded
+    if (avatar.pendingUpgrades >= expectedPoints) return avatar;
+
+    return avatar.copyWith(pendingUpgrades: expectedPoints);
   }
 }

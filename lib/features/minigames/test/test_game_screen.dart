@@ -6,14 +6,15 @@ class TestGameScreen extends StatelessWidget {
   const TestGameScreen({super.key});
 
   void _finish(BuildContext context, int stars) {
+    final capped = stars.clamp(0, 3);
     final result = MiniGameResult(
       gameId: 'test',
       modeId: 'test',
-      correctAnswers: stars == 3 ? 9 : stars == 2 ? 7 : 5,
+      correctAnswers: capped == 3 ? 9 : capped == 2 ? 7 : 5,
       totalQuestions: 10,
       starsEarned: stars,
       elapsedSeconds: 30,
-      bestStreak: stars,
+      bestStreak: capped,
     );
     context.go('/game/result', extra: result);
   }
@@ -31,7 +32,7 @@ class TestGameScreen extends StatelessWidget {
               style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 40),
-            for (final stars in [1, 2, 3])
+            for (final stars in [1, 2, 3, 10])
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 8),
                 child: SizedBox(
@@ -39,12 +40,16 @@ class TestGameScreen extends StatelessWidget {
                   height: 64,
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: [Colors.orange, Colors.blue, Colors.green][stars - 1],
+                      backgroundColor: stars <= 3
+                          ? [Colors.orange, Colors.blue, Colors.green][stars - 1]
+                          : Colors.purple,
                       foregroundColor: Colors.white,
                       textStyle: const TextStyle(fontSize: 24),
                     ),
                     onPressed: () => _finish(context, stars),
-                    child: Text('${"⭐" * stars}  $stars ${stars == 1 ? "star" : "stars"}'),
+                    child: Text(stars <= 3
+                        ? '${"⭐" * stars}  $stars ${stars == 1 ? "star" : "stars"}'
+                        : '⭐x10  10 stars'),
                   ),
                 ),
               ),

@@ -6,13 +6,29 @@ import 'package:flutter/material.dart';
 class CharacterPainter extends CustomPainter {
   final int characterIndex;
   final int level;
+  final Map<String, int>? trackProgress;
 
   CharacterPainter({
     required this.characterIndex,
     this.level = 1,
+    this.trackProgress,
   });
 
-  int get tier => (level - 1) ~/ 5; // 0-4
+  /// When trackProgress is provided, map total track stages to a tier 0-4.
+  /// 0 stages = tier 0, 1-3 = tier 1, 4-6 = tier 2, 7-9 = tier 3, 10+ = tier 4.
+  int get _fallbackTier {
+    if (trackProgress == null || trackProgress!.isEmpty) {
+      return (level - 1) ~/ 5;
+    }
+    final total = trackProgress!.values.fold(0, (s, v) => s + v);
+    if (total >= 10) return 4;
+    if (total >= 7) return 3;
+    if (total >= 4) return 2;
+    if (total >= 1) return 1;
+    return 0;
+  }
+
+  int get tier => _fallbackTier;
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -1690,5 +1706,7 @@ class CharacterPainter extends CustomPainter {
 
   @override
   bool shouldRepaint(CharacterPainter oldDelegate) =>
-      characterIndex != oldDelegate.characterIndex || level != oldDelegate.level;
+      characterIndex != oldDelegate.characterIndex ||
+      level != oldDelegate.level ||
+      trackProgress != oldDelegate.trackProgress;
 }

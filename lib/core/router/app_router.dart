@@ -4,6 +4,8 @@ import 'package:go_router/go_router.dart';
 import 'package:magic_learning/features/avatar/providers/avatar_provider.dart';
 import 'package:magic_learning/features/avatar/screens/avatar_creation_screen.dart';
 import 'package:magic_learning/features/avatar/screens/avatar_upgrade_screen.dart';
+import 'package:magic_learning/features/avatar/screens/avatar_view_screen.dart';
+import 'package:magic_learning/features/avatar/screens/upgrade_picker_screen.dart';
 import 'package:magic_learning/features/hub/screens/minigame_hub_screen.dart';
 import 'package:magic_learning/features/minigames/common/mode_selection_screen.dart';
 import 'package:magic_learning/features/minigames/common/game_play_screen.dart';
@@ -37,8 +39,25 @@ final routerProvider = Provider<GoRouter>((ref) {
         builder: (context, state) => const AvatarCreationScreen(),
       ),
       GoRoute(
+        path: '/avatar/view',
+        builder: (context, state) => const AvatarViewScreen(),
+      ),
+      GoRoute(
+        path: '/avatar/upgrade-pick',
+        builder: (context, state) => const UpgradePickerScreen(),
+      ),
+      GoRoute(
         path: '/avatar/upgrade',
-        builder: (context, state) => const AvatarUpgradeScreen(),
+        builder: (context, state) {
+          final extra = state.extra as Map<String, dynamic>?;
+          return AvatarUpgradeScreen(
+            previousLevel: extra?['previousLevel'] as int?,
+            trackId: extra?['trackId'] as String?,
+            stageName: extra?['stageName'] as String?,
+            stageDescription: extra?['stageDescription'] as String?,
+            trackName: extra?['trackName'] as String?,
+          );
+        },
       ),
       GoRoute(
         path: '/hub',

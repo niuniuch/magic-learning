@@ -28,6 +28,7 @@ class _ResultScreenState extends ConsumerState<ResultScreen>
 
   bool _saved = false;
   bool _leveledUp = false;
+  bool _hasUpgradeAvailable = false;
   bool _animationDone = false;
 
   double _xpBarFrom = 0.0;
@@ -116,6 +117,7 @@ class _ResultScreenState extends ConsumerState<ResultScreen>
     if (newLevel > prevLevel) {
       _leveledUp = true;
     }
+    _hasUpgradeAvailable = (newAvatar?.pendingUpgrades ?? 0) > 0;
     if (mounted) setState(() {});
   }
 
@@ -437,8 +439,8 @@ class _ResultScreenState extends ConsumerState<ResultScreen>
                             child: ElevatedButton(
                               onPressed: _animationDone
                                   ? () {
-                                      if (_leveledUp) {
-                                        context.go('/avatar/upgrade');
+                                      if (_hasUpgradeAvailable) {
+                                        context.go('/avatar/upgrade-pick');
                                       } else {
                                         context.go('/hub');
                                       }
@@ -454,7 +456,7 @@ class _ResultScreenState extends ConsumerState<ResultScreen>
                                 ),
                               ),
                               child: Text(
-                                _leveledUp ? '\u{2B50} ${l10n.levelUp}!' : 'ZAGRAJ JESZCZE RAZ',
+                                _hasUpgradeAvailable ? '\u{2B50} Nowe ulepszenie!' : 'ZAGRAJ JESZCZE RAZ',
                                 style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
                               ),
                             ),

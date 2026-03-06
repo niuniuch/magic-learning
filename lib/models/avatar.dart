@@ -10,6 +10,8 @@ class Avatar extends Equatable {
   final List<String> unlockedUpgrades;
   final String? activeHat;
   final int colorIndex;
+  final Map<String, int> trackProgress; // trackId.name → stage (0-4)
+  final int pendingUpgrades; // unspent upgrade points
 
   const Avatar({
     required this.id,
@@ -20,6 +22,8 @@ class Avatar extends Equatable {
     this.unlockedUpgrades = const [],
     this.activeHat,
     this.colorIndex = 0,
+    this.trackProgress = const {},
+    this.pendingUpgrades = 0,
   });
 
   Avatar copyWith({
@@ -31,6 +35,8 @@ class Avatar extends Equatable {
     List<String>? unlockedUpgrades,
     String? activeHat,
     int? colorIndex,
+    Map<String, int>? trackProgress,
+    int? pendingUpgrades,
   }) {
     return Avatar(
       id: id ?? this.id,
@@ -41,6 +47,8 @@ class Avatar extends Equatable {
       unlockedUpgrades: unlockedUpgrades ?? this.unlockedUpgrades,
       activeHat: activeHat ?? this.activeHat,
       colorIndex: colorIndex ?? this.colorIndex,
+      trackProgress: trackProgress ?? this.trackProgress,
+      pendingUpgrades: pendingUpgrades ?? this.pendingUpgrades,
     );
   }
 
@@ -53,6 +61,8 @@ class Avatar extends Equatable {
         'unlockedUpgrades': unlockedUpgrades,
         'activeHat': activeHat,
         'colorIndex': colorIndex,
+        'trackProgress': trackProgress,
+        'pendingUpgrades': pendingUpgrades,
       };
 
   factory Avatar.fromJson(Map<String, dynamic> json) => Avatar(
@@ -66,11 +76,21 @@ class Avatar extends Equatable {
                 const [],
         activeHat: json['activeHat'] as String?,
         colorIndex: json['colorIndex'] as int? ?? 0,
+        trackProgress:
+            (json['trackProgress'] as Map<String, dynamic>?)?.map(
+                  (k, v) => MapEntry(k, v as int),
+                ) ??
+                const {},
+        pendingUpgrades: json['pendingUpgrades'] as int? ?? 0,
       );
 
   String encode() => jsonEncode(toJson());
   static Avatar decode(String source) =>
       Avatar.fromJson(jsonDecode(source) as Map<String, dynamic>);
+
+  /// Sum of all track stage values.
+  int get totalTrackStages =>
+      trackProgress.values.fold(0, (sum, v) => sum + v);
 
   @override
   List<Object?> get props => [
@@ -82,5 +102,7 @@ class Avatar extends Equatable {
         unlockedUpgrades,
         activeHat,
         colorIndex,
+        trackProgress,
+        pendingUpgrades,
       ];
 }

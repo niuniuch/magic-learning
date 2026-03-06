@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:magic_learning/core/constants/game_constants.dart';
 import 'package:magic_learning/core/theme/app_theme.dart';
 import 'package:magic_learning/features/avatar/widgets/avatar_character.dart';
@@ -38,12 +39,47 @@ class AvatarStatusBar extends StatelessWidget {
       ),
       child: Row(
         children: [
-          AvatarCharacter(
-            characterIndex: avatar.characterIndex,
-            size: 64,
-            colorIndex: avatar.colorIndex,
-            hat: avatar.activeHat,
-            level: avatar.level,
+          GestureDetector(
+            onTap: () => avatar.pendingUpgrades > 0
+                ? context.push('/avatar/upgrade-pick')
+                : context.push('/avatar/view'),
+            child: Stack(
+              clipBehavior: Clip.none,
+              children: [
+                AvatarCharacter(
+                  characterIndex: avatar.characterIndex,
+                  size: 64,
+                  colorIndex: avatar.colorIndex,
+                  hat: avatar.activeHat,
+                  level: avatar.level,
+                  trackProgress: avatar.trackProgress,
+                ),
+                if (avatar.pendingUpgrades > 0)
+                  Positioned(
+                    top: -4,
+                    right: -4,
+                    child: Container(
+                      width: 22,
+                      height: 22,
+                      decoration: BoxDecoration(
+                        color: Colors.amber.shade600,
+                        shape: BoxShape.circle,
+                        border: Border.all(color: Colors.white, width: 2),
+                      ),
+                      child: Center(
+                        child: Text(
+                          '${avatar.pendingUpgrades}',
+                          style: const TextStyle(
+                            fontSize: 11,
+                            fontWeight: FontWeight.w800,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+              ],
+            ),
           ),
           const SizedBox(width: 16),
           Expanded(

@@ -7,6 +7,7 @@ class AvatarCharacter extends StatelessWidget {
   final int colorIndex;
   final String? hat;
   final int level;
+  final Map<String, int>? trackProgress;
 
   static const int characterCount = 6;
 
@@ -35,6 +36,7 @@ class AvatarCharacter extends StatelessWidget {
     this.colorIndex = 0,
     this.hat,
     this.level = 1,
+    this.trackProgress,
   });
 
   @override
@@ -73,6 +75,7 @@ class AvatarCharacter extends StatelessWidget {
                   painter: CharacterPainter(
                     characterIndex: characterIndex,
                     level: level,
+                    trackProgress: trackProgress,
                   ),
                 ),
               ),
