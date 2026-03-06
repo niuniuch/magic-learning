@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:magic_learning/features/avatar/painters/character_painter.dart';
@@ -101,14 +103,15 @@ class AvatarImage extends StatefulWidget {
 }
 
 class _AvatarImageState extends State<AvatarImage> {
-  bool? _imageExists;
+  Uint8List? _imageBytes;
+  bool _checked = false;
   late String _assetPath;
 
   @override
   void initState() {
     super.initState();
     _assetPath = AvatarImage.assetPath(widget.characterIndex, widget.trackProgress);
-    _checkAssetExists();
+    _loadImage();
   }
 
   @override
@@ -117,20 +120,24 @@ class _AvatarImageState extends State<AvatarImage> {
     final newPath = AvatarImage.assetPath(widget.characterIndex, widget.trackProgress);
     if (newPath != _assetPath) {
       _assetPath = newPath;
-      _imageExists = null;
-      _checkAssetExists();
+      _imageBytes = null;
+      _checked = false;
+      _loadImage();
     }
   }
 
-  Future<void> _checkAssetExists() async {
+  Future<void> _loadImage() async {
     try {
-      await rootBundle.load(_assetPath);
+      final data = await rootBundle.load(_assetPath);
       if (mounted) {
-        setState(() => _imageExists = true);
+        setState(() {
+          _imageBytes = data.buffer.asUint8List();
+          _checked = true;
+        });
       }
     } catch (_) {
       if (mounted) {
-        setState(() => _imageExists = false);
+        setState(() => _checked = true);
       }
     }
   }
@@ -159,7 +166,7 @@ class _AvatarImageState extends State<AvatarImage> {
           ],
         ),
         child: ClipOval(
-          child: _imageExists == true
+          child: _imageBytes != null
               ? _buildImageContent()
               : _buildPainterFallback(),
         ),
@@ -181,12 +188,15 @@ class _AvatarImageState extends State<AvatarImage> {
             child: Align(
               alignment: Alignment.topCenter,
               heightFactor: 220 / 360,
-              child: Image.asset(
-                _assetPath,
+              child: Image.memory(
+                _imageBytes!,
                 width: 200,
                 height: 360,
                 fit: BoxFit.contain,
-                filterQuality: FilterQuality.medium,
+                errorBuilder: (context, error, stackTrace) {
+                  debugPrint('AvatarImage error: $error for $_assetPath');
+                  return _buildPainterFallback();
+                },
               ),
             ),
           ),

@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:magic_learning/features/avatar/painters/character_painter.dart';
@@ -31,14 +33,15 @@ class AvatarFullBody extends StatefulWidget {
 }
 
 class _AvatarFullBodyState extends State<AvatarFullBody> {
-  bool? _imageExists;
+  Uint8List? _imageBytes;
+  bool _checked = false;
   late String _assetPath;
 
   @override
   void initState() {
     super.initState();
     _assetPath = AvatarImage.assetPath(widget.characterIndex, widget.trackProgress);
-    _checkAssetExists();
+    _loadImage();
   }
 
   @override
@@ -47,20 +50,24 @@ class _AvatarFullBodyState extends State<AvatarFullBody> {
     final newPath = AvatarImage.assetPath(widget.characterIndex, widget.trackProgress);
     if (newPath != _assetPath) {
       _assetPath = newPath;
-      _imageExists = null;
-      _checkAssetExists();
+      _imageBytes = null;
+      _checked = false;
+      _loadImage();
     }
   }
 
-  Future<void> _checkAssetExists() async {
+  Future<void> _loadImage() async {
     try {
-      await rootBundle.load(_assetPath);
+      final data = await rootBundle.load(_assetPath);
       if (mounted) {
-        setState(() => _imageExists = true);
+        setState(() {
+          _imageBytes = data.buffer.asUint8List();
+          _checked = true;
+        });
       }
     } catch (_) {
       if (mounted) {
-        setState(() => _imageExists = false);
+        setState(() => _checked = true);
       }
     }
   }
@@ -70,22 +77,29 @@ class _AvatarFullBodyState extends State<AvatarFullBody> {
     return SizedBox(
       width: widget.width,
       height: widget.height,
-      child: _imageExists == true
-          ? Image.asset(
-              _assetPath,
+      child: _imageBytes != null
+          ? Image.memory(
+              _imageBytes!,
               width: widget.width,
               height: widget.height,
               fit: BoxFit.contain,
-              filterQuality: FilterQuality.medium,
+              errorBuilder: (context, error, stackTrace) {
+                debugPrint('AvatarFullBody image error: $error for $_assetPath');
+                return _buildPainter();
+              },
             )
-          : CustomPaint(
-              size: Size(widget.width, widget.height),
-              painter: CharacterPainter(
-                characterIndex: widget.characterIndex,
-                level: widget.level,
-                trackProgress: widget.trackProgress,
-              ),
-            ),
+          : _buildPainter(),
+    );
+  }
+
+  Widget _buildPainter() {
+    return CustomPaint(
+      size: Size(widget.width, widget.height),
+      painter: CharacterPainter(
+        characterIndex: widget.characterIndex,
+        level: widget.level,
+        trackProgress: widget.trackProgress,
+      ),
     );
   }
 }
