@@ -2,7 +2,6 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:magic_learning/features/avatar/painters/character_painter.dart';
 import 'package:magic_learning/features/avatar/widgets/avatar_image.dart';
 
 /// Full-body character widget that tries to render an image asset and falls
@@ -85,21 +84,10 @@ class _AvatarFullBodyState extends State<AvatarFullBody> {
               fit: BoxFit.contain,
               errorBuilder: (context, error, stackTrace) {
                 debugPrint('AvatarFullBody image error: $error for $_assetPath');
-                return _buildPainter();
+                return const SizedBox.shrink();
               },
             )
-          : _buildPainter(),
-    );
-  }
-
-  Widget _buildPainter() {
-    return CustomPaint(
-      size: Size(widget.width, widget.height),
-      painter: CharacterPainter(
-        characterIndex: widget.characterIndex,
-        level: widget.level,
-        trackProgress: widget.trackProgress,
-      ),
+          : const SizedBox.shrink(),
     );
   }
 }

@@ -32,7 +32,7 @@ class TestGameScreen extends StatelessWidget {
               style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 40),
-            for (final stars in [1, 2, 3, 10])
+            for (final stars in [1, 2, 3, 10, 30])
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 8),
                 child: SizedBox(
@@ -42,14 +42,14 @@ class TestGameScreen extends StatelessWidget {
                     style: ElevatedButton.styleFrom(
                       backgroundColor: stars <= 3
                           ? [Colors.orange, Colors.blue, Colors.green][stars - 1]
-                          : Colors.purple,
+                          : stars == 30 ? Colors.red : Colors.purple,
                       foregroundColor: Colors.white,
                       textStyle: const TextStyle(fontSize: 24),
                     ),
                     onPressed: () => _finish(context, stars),
                     child: Text(stars <= 3
                         ? '${"⭐" * stars}  $stars ${stars == 1 ? "star" : "stars"}'
-                        : '⭐x10  10 stars'),
+                        : '⭐x$stars  $stars stars'),
                   ),
                 ),
               ),

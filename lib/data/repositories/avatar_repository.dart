@@ -27,19 +27,21 @@ class AvatarRepository {
   }
 
   Avatar addXp(Avatar avatar, int stars) {
-    final newXp = avatar.xp + stars;
-    final xpNeeded = GameConstants.xpForLevel(avatar.level);
+    int xp = avatar.xp + stars;
+    int level = avatar.level;
+    int upgrades = avatar.pendingUpgrades;
 
-    if (newXp >= xpNeeded && avatar.level < GameConstants.maxAvatarLevel) {
-      final newLevel = avatar.level + 1;
-      final earnedUpgrade = GameConstants.isUpgradeLevel(newLevel) ? 1 : 0;
-      return avatar.copyWith(
-        level: newLevel,
-        xp: newXp - xpNeeded,
-        pendingUpgrades: avatar.pendingUpgrades + earnedUpgrade,
-      );
+    while (level < GameConstants.maxAvatarLevel) {
+      final xpNeeded = GameConstants.xpForLevel(level);
+      if (xp < xpNeeded) break;
+      xp -= xpNeeded;
+      level++;
+      if (GameConstants.isUpgradeLevel(level)) {
+        upgrades++;
+      }
     }
-    return avatar.copyWith(xp: newXp);
+
+    return avatar.copyWith(level: level, xp: xp, pendingUpgrades: upgrades);
   }
 
   /// Grant retroactive pending upgrades for existing high-level avatars

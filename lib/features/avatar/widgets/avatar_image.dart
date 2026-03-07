@@ -2,7 +2,6 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:magic_learning/features/avatar/painters/character_painter.dart';
 
 /// Drop-in replacement for [AvatarCharacter] that renders an image asset
 /// when available, falling back to the [CharacterPainter] CustomPaint.
@@ -206,23 +205,6 @@ class _AvatarImageState extends State<AvatarImage> {
   }
 
   Widget _buildPainterFallback() {
-    return Padding(
-      padding: EdgeInsets.only(top: widget.size * 0.05),
-      child: FittedBox(
-        fit: BoxFit.contain,
-        alignment: Alignment.topCenter,
-        child: SizedBox(
-          width: 200,
-          height: 220,
-          child: CustomPaint(
-            painter: CharacterPainter(
-              characterIndex: widget.characterIndex,
-              level: widget.level,
-              trackProgress: widget.trackProgress,
-            ),
-          ),
-        ),
-      ),
-    );
+    return const SizedBox.shrink();
   }
 }

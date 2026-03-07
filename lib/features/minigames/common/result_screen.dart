@@ -133,27 +133,48 @@ class _ResultScreenState extends ConsumerState<ResultScreen>
     if (!_leveledUp) {
       return _xpBarFrom + (_xpBarTo - _xpBarFrom) * t;
     }
-    // Animation done: show final value
     if (t >= 1.0) return _xpBarTo;
-    // Level-up: fill to 1.0, reset, fill to overflow
-    final fillDist = 1.0 - _xpBarFrom;
-    final total = fillDist + _xpBarTo;
-    if (total <= 0) return _xpBarFrom;
-    final w = fillDist / total;
-    if (t <= w) {
-      return _xpBarFrom + (t / w) * fillDist;
+
+    final levelsGained = _levelTo - _levelFrom;
+    // Total segments: fill first bar to 1.0, then N-1 full bars, then fill final bar
+    final totalWork = (1.0 - _xpBarFrom) + (levelsGained - 1).clamp(0, 999) + _xpBarTo;
+    if (totalWork <= 0) return _xpBarTo;
+
+    var remaining = t * totalWork;
+
+    // First segment: fill current bar to 1.0
+    final firstFill = 1.0 - _xpBarFrom;
+    if (remaining <= firstFill) {
+      return _xpBarFrom + remaining;
     }
-    return ((t - w) / (1.0 - w)) * _xpBarTo;
+    remaining -= firstFill;
+
+    // Middle segments: full bar fills (each = 1.0 of work)
+    final middleBars = levelsGained - 1;
+    if (remaining <= middleBars) {
+      return remaining - remaining.floor().toDouble();
+    }
+    remaining -= middleBars;
+
+    // Final segment: fill to _xpBarTo
+    return (_xpBarTo > 0) ? (remaining / _xpBarTo).clamp(0.0, 1.0) * _xpBarTo : 0.0;
   }
 
   int _displayLevel(double t) {
     if (!_leveledUp) return _levelTo;
-    // Animation done: show new level
     if (t >= 1.0) return _levelTo;
-    final fillDist = 1.0 - _xpBarFrom;
-    final total = fillDist + _xpBarTo;
-    if (total <= 0) return _levelTo;
-    return t < fillDist / total ? _levelFrom : _levelTo;
+
+    final levelsGained = _levelTo - _levelFrom;
+    final totalWork = (1.0 - _xpBarFrom) + (levelsGained - 1).clamp(0, 999) + _xpBarTo;
+    if (totalWork <= 0) return _levelTo;
+
+    var remaining = t * totalWork;
+    final firstFill = 1.0 - _xpBarFrom;
+    if (remaining <= firstFill) return _levelFrom;
+    remaining -= firstFill;
+
+    final levelsInMiddle = remaining.floor().clamp(0, levelsGained - 1);
+    return _levelFrom + 1 + levelsInMiddle;
   }
 
   @override
